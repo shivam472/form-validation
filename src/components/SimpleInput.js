@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useInput from "../hooks/use-input";
 
 const SimpleInput = (props) => {
@@ -11,31 +10,26 @@ const SimpleInput = (props) => {
     reset: resetNameInput,
   } = useInput((value) => value.trim() !== "");
 
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-
   const emailRegx = /[a-z0-9_]+@[a-z]+\.[a-z]+$/;
-  const enteredEmailIsValid = emailRegx.test(enteredEmail);
-  const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
+  const {
+    enteredValue: enteredEmail,
+    valueIsValid: emailIsValid,
+    hasError: emailInputHasError,
+    inputChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailInputBlurHandler,
+    reset: resetEmailInput,
+  } = useInput((value) => emailRegx.test(value));
 
   let formIsValid = false;
 
-  if (nameIsValid && enteredEmailIsValid) {
+  if (nameIsValid && emailIsValid) {
     formIsValid = true;
   }
-
-  const emailChangeHandler = (event) => {
-    setEnteredEmail(event.target.value);
-  };
-
-  const emailInputBlurHandler = () => {
-    setEnteredEmailTouched(true);
-  };
 
   const submitHandler = (event) => {
     event.preventDefault();
 
-    if (!nameIsValid && !enteredEmailIsValid) {
+    if (!nameIsValid && !emailIsValid) {
       return;
     }
 
@@ -43,14 +37,13 @@ const SimpleInput = (props) => {
     console.log(enteredEmail);
 
     resetNameInput();
-    setEnteredEmail("");
-    setEnteredEmailTouched(false);
+    resetEmailInput();
   };
 
   const nameInputClasses = nameInputHasError
     ? "form-control invalid"
     : "form-control";
-  const emailInputClasses = emailInputIsInvalid
+  const emailInputClasses = emailInputHasError
     ? "form-control invalid"
     : "form-control";
 
@@ -78,7 +71,7 @@ const SimpleInput = (props) => {
           onBlur={emailInputBlurHandler}
           value={enteredEmail}
         />
-        {emailInputIsInvalid && (
+        {emailInputHasError && (
           <p className="error-text">Please provide a correct email</p>
         )}
       </div>
