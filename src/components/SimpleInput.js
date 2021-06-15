@@ -4,8 +4,8 @@ const SimpleInput = (props) => {
   const {
     enteredValue: enteredName,
     valueIsValid: nameIsValid,
-    hasError: nameInputHasError,
-    inputChangeHandler: nameChangeHandler,
+    inputHasError: nameInputHasError,
+    valueChangeHandler: nameChangeHandler,
     inputBlurHandler: nameInputBlurHandler,
     reset: resetNameInput,
   } = useInput((value) => value.trim() !== "");
@@ -14,8 +14,8 @@ const SimpleInput = (props) => {
   const {
     enteredValue: enteredEmail,
     valueIsValid: emailIsValid,
-    hasError: emailInputHasError,
-    inputChangeHandler: emailChangeHandler,
+    inputHasError: emailInputHasError,
+    valueChangeHandler: emailChangeHandler,
     inputBlurHandler: emailInputBlurHandler,
     reset: resetEmailInput,
   } = useInput((value) => emailRegx.test(value));
